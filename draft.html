@@ -1,0 +1,301 @@
+<style>
+body {
+	margin: 2em;
+	background: #333;
+}
+
+section {
+	padding: 2em;
+	margin: 1em auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#canvas {
+	display: inline-block;
+	position: absolute;
+	left: -1px;
+	top: -1px;
+	z-index: 5;
+}
+
+#twrap {
+	clip-path: polygon(67px 18px, 67px 252px, 270px 135px);
+	-moz-clip-path: polygon(67px 18px, 67px 252px, 270px 135px);
+	display: inline-block;
+	height: 270px;
+	width: 270px;
+	position: absolute;
+	z-index: 1;
+	left: -135px;
+	top: -135px;
+	background: hsl(0, 100%, 50%);
+}
+#triangle {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+}
+
+#c2 {
+	/*transform: scale(1.5);*/
+	cursor: default;
+}
+#wheel {
+	position: relative;
+	line-height: 0;
+	user-select: none;
+	width: 330px;
+	width: 330px;
+}
+
+#hueSel, #fadeSel {
+	position: absolute;
+	z-index: 8;
+	margin-left: -10px;
+	margin-top: -10px;
+	pointer-events: none;
+}
+#hueSel {
+	top: 0;
+	left: 0;
+	transform: translate(315px,165px);
+}
+
+.range {
+	content: "";
+	position: relative;
+	background-image: linear-gradient(to right, rgba(255,255,255,1), rgba(0,0,0,.4));
+	border-radius: 25px;
+	height: 16px;
+	width: 250px; 
+	line-height:0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	/* border:1px solid rgba(200,40,40,.8); */
+}
+
+input[type="range"] {
+	--gray: rgba(120,120,120,.6);
+	background-color: rgba(0, 0, 0, 0);
+	border-radius: 25px;
+	/*border: 1px solid black;*/
+	box-shadow: 0 0 2px 1px rgba(20,20,20,.9);
+	cursor: pointer;
+	height: 16px;
+	width:280px;
+	margin-left:-1px;
+	margin-right: -1px;
+	outline: none;
+	-webkit-appearance: none;
+	background-image: linear-gradient(45deg, var(--gray) 25%, transparent 25%, transparent 75%, var(--gray) 75%, var(--gray)), 
+	linear-gradient(45deg, var(--gray) 25%, transparent 25%, transparent 75%, var(--gray) 75%, var(--gray));
+	background-size:16px 16px;
+	background-position:0 0, 8px 8px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+	content: "";
+	border-radius: 50%;
+	border: solid 2px rgb(255,255,255);
+	/*background-color: rgba(250,250,250,.9);*/
+	height: 22px;
+	width: 22px;
+	-webkit-appearance: none;
+}
+input[type=number] {
+	width: 50px;
+	font-size: 1.4em;
+	margin-left: 1em;
+}
+.footer {
+	margin-top: 1.5em;
+	display: flex;
+	align-items: center;
+	user-select: none;
+}
+svg {
+	user-select: none;
+}
+</style>
+
+<section>
+	<svg width="20" height="20">
+		<defs>
+			<mask id="hole">
+				<rect width="100%" height="100%" fill="white"/>
+				<circle r="8" cx="10" cy="10" fill="black"/>
+			</mask>
+		</defs>
+	</svg>
+	<div id="wheel">
+		<canvas id="c2"  height="330" width="330"></canvas>
+		<div id="triangle">
+			<div id="twrap">
+				<canvas id="canvas" height="270" width="270"></canvas>
+				
+			</div>
+			<svg id="fadeSel" width="20" height="20">
+				<circle id="donut" fill="white" r="10" cx="10" cy="10" mask="url(#hole)" />
+			</svg>
+		</div>
+
+		<svg id="hueSel" width="20" height="20">
+			<circle id="donut" fill="white" r="10" cx="10" cy="10" mask="url(#hole)" />
+		</svg>
+	</div>
+	<div class="footer">
+		<div class="range">
+			<input class="r" type="range" value="80" min="0" max="100">
+		</div>
+		<input type="number" value="80">
+	</div>
+</section>
+
+<script src="https://unpkg.com/colorutil@3.0.2/index.js"></script>
+<script>
+const {PI} = Math;
+
+createTriangle();
+createAnnulus();
+
+
+c2.onmousedown = e => {
+	const r = wheel.getBoundingClientRect(), X = r.left+r.width/2, Y = r.top+r.height/2;
+	const d = ((e.clientX-X)**2+(e.clientY-Y)**2)**.5;
+	if (d>165 || d<135) return;
+
+	rotateWheel(e, X, Y);
+	move(e, document, e => {
+		rotateWheel(e, X, Y);
+	});
+};
+
+canvas.onmousedown = e => {
+	// ugly, todo a nice state in part3 (React)
+	const angle = parseFloat(triangle.style.transform.slice(7)) || 0;
+	const R = triangle.getBoundingClientRect(); // triangle has no width and height
+
+	const angleRad = angle * PI/180; // red angle in radian
+
+	const h = 135 * Math.sin(PI/6); // the small distance from triangle center to one side
+
+	move(e, document, e => {
+		let x = e.clientX - R.left;
+		let y = e.clientY - R.top;
+		if (e.target !== canvas) {
+			const alpha = Math.atan2(y, x);
+			const beta = ((alpha - angleRad) % (2*PI) + 2*PI) % (2*PI);
+
+			const med = beta>=0 && beta <2*PI/3 ? PI/3 : beta >= 2*PI/3 && beta <4*PI/3 ? -PI : -PI/3;
+			const rho = h / Math.cos(beta - med);
+			x = rho * Math.cos(alpha);
+			y = rho * Math.sin(alpha);
+		}
+
+		fadeSel.style.transform = `rotate(${-angle}deg) translate(${x}px, ${y}px)`;
+	});
+};
+
+function rotateWheel(e, X, Y) { // rotate from mouse event, and X, Y center of wheel
+	const angle = Math.atan2(e.clientY-Y, e.clientX-X), angleDeg = Math.round(angle*180/Math.PI*10)/10;
+	const x = Math.round(165 + 150*Math.cos(angle)), y = Math.round(165 + 150*Math.sin(angle));
+	// console.log(angle, x, y, `hsl(${angleDeg}, 100%, 50%)`);
+	hueSel.style.transform = `translate(${x}px, ${y}px)`;
+	triangle.style.transform = `rotate(${angleDeg}deg)`;
+	twrap.style.backgroundColor = `hsl(${angleDeg}, 100%, 50%)`;
+}
+
+
+function createAnnulus() {
+	var {width, height}  = c2;
+	var half = width/2;
+	var radius = half-15;
+	var cx = c2.getContext('2d');
+
+
+	var imageData = cx.getImageData(0, 0, width, height);
+	var {data} = imageData;
+
+	for (var j = 0; j < height; j++) {
+		for (var i = 0; i < width; i++) {
+			var [r, g, b] = hsl2rgb((Math.atan2(j-half, i-half))/(2*PI), 1, .5).map(x=>Math.round(x*255));
+			var index = (j*width+i)*4;
+			data[index] = r;
+			data[index+1] = g;
+			data[index+2] = b;
+			data[index+3] = 0xff;
+		}
+	}
+
+	cx.putImageData(imageData, 0, 0);
+	cx.save();
+	cx.globalCompositeOperation = "destination-in";
+	cx.beginPath();
+	cx.arc(half, half, radius, 0, 2*PI,false);
+	cx.lineWidth=30;
+	cx.stroke();
+	cx.restore();
+}
+
+
+function createTriangle() {
+	var height = Math.round(canvas.height * 3**.5 / 2);
+	var width = Math.round(canvas.height * 3 / 4);
+
+	var ctx = canvas.getContext('2d');
+	ctx.beginPath();
+	ctx.moveTo(0,0)
+	ctx.lineTo(0, height);
+	ctx.lineTo(width, height/2);
+	ctx.closePath();
+	ctx.clip();
+	ctx.fillStyle="rgba(0,0,0,0)";
+	ctx.fill();
+
+	var imageData = ctx.getImageData(0, 0, width, height);
+	var {data} = imageData;
+
+	var [x1,y1] = [0, 0];
+	var [x2,y2] = [0, height];
+	var [x3,y3] = [width, height/2];
+	var det = (y2-y3) * (x1-x3) + (x3-x2) * (y1-y3);
+	function barycentric(x,y) {
+		var i1 = ((y2-y3)*(x-x3)+(x3-x2)*(y-y3))/det;
+		var i2 = ((y3-y1)*(x-x3)+(x1-x3)*(y-y3))/det;
+		var i3 = 1-i1-i2;
+		return [i1, i2, i3];
+	}
+
+	for (var j = 0; j < height; j++) {
+		for (var i = 0; i < width; i++) {
+			var [i1, i2, i3] = barycentric(i,j);
+			var k = Math.floor(255*(i1+i2));
+			var v = Math.floor(255*i2);
+			var index = (j*width+i)*4;
+			data[index] = v;
+			data[index+1] = v;
+			data[index+2] = v;
+			data[index+3] = k;
+		}
+	}
+
+	ctx.putImageData(imageData, canvas.height-width, (canvas.height-height)/2);
+}
+
+// move/drag element helper
+function move(e, container, cb) {
+	return new Promise(end => {
+		const up = e => {
+			document.removeEventListener('mouseup', up);
+			container.removeEventListener('mousemove', cb);
+			end(e);
+		};
+		cb(e); // trigger it now also
+		document.addEventListener('mouseup', up);
+		container.addEventListener('mousemove', cb);
+	})
+}
+</script>
