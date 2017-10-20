@@ -2,9 +2,11 @@
   "name": "color-wheel",
   "version": "1.0.0",
   "description": "wheel color picker",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "node test"
+    "test": "node test",
+    "build": "rollup -c",
+    "dev": "rollup -c -w"
   },
   "repository": {
     "type": "git",
@@ -20,5 +22,16 @@
   "bugs": {
     "url": "https://github.com/caub/color-wheel/issues"
   },
-  "homepage": "https://github.com/caub/color-wheel#readme"
+  "homepage": "https://github.com/caub/color-wheel#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-react": "^6.24.1",
+    "rollup": "^0.50.0",
+    "rollup-plugin-babel": "^3.0.2"
+  },
+  "dependencies": {
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "styled-components": "^2.2.1"
+  }
 }
