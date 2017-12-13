@@ -11,6 +11,8 @@ import ColorWheel from 'color-wheel';
 />
 ```
 
+
 ### Early draft
 
-[draft](//caub.github.io/color-wheel/draft) ([disassembled](//caub.github.io/color-wheel/draft-parts)) for the record
+- [draft](//caub.github.io/color-wheel/draft)
+- [disassembled](//caub.github.io/color-wheel/draft-parts)

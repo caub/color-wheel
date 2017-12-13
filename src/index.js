@@ -1,2 +1,2 @@
 import React from 'react';
-export {default as default} from './Wheel';
+export {default} from './Wheel';
