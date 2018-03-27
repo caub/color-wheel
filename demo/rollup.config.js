@@ -1,21 +1,29 @@
 import babel from 'rollup-plugin-babel';
+import resolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
 
 export default {
-	input: 'demo/index.js',
-	output: {
-		file: 'dist/color-wheel-demo.js',
-		format: 'umd'
-	},
-	plugins: [
-		babel()
-	],
-	watch: {
-		exclude: ['node_modules/**']
-	},
-	external: ['react', 'react-dom', 'styled-components'],
-	globals: {
-		'react': 'React',
-		'react-dom': 'ReactDOM',
-		'styled-components': 'styled'
-	}
+  input: ['index.js', 'vendor.js'],
+  output: {
+    dir: 'dist',
+    format: 'es',
+  },
+  plugins: [
+    resolve({
+      jsnext: true,
+      customResolveOptions: {
+        moduleDirectory: ['node_modules', '../node_modules'],
+      },
+    }),
+    commonjs({
+      include: ['node_modules/**', '../node_modules/**'],
+    }),
+    babel({
+      exclude: ['node_modules/**', '../node_modules/**'],
+    }),
+  ],
+  watch: {
+    exclude: ['node_modules/**'],
+  },
+  experimentalCodeSplitting: true,
 };

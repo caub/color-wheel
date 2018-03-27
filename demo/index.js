@@ -1,5 +1,11 @@
 import React from 'react';
-import { render } from 'react-dom';
-import Wheel from '../src/index.js';
+import ReactDOM from 'react-dom';
+import Wheel, { OpacityRange } from '../src';
 
-render(<Wheel/>, document.getElementById('root'));
+ReactDOM.render(
+  <div style={{ background: '#333' }}>
+    <Wheel />
+    <OpacityRange />
+  </div>,
+  document.getElementById('root'),
+);

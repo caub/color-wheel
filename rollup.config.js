@@ -1,17 +1,16 @@
 import babel from 'rollup-plugin-babel';
 
 export default {
-	input: 'src/index.js',
-	output: {
-		file: 'dist/color-wheel.js',
-		format: 'es'
-	},
-	plugins: [
-		babel()
-	],
-	external: ['react', 'styled-components'],
-	globals: {
-		'react': 'React',
-		'styled-components': 'styled'
-	}
+  input: ['src/index.js', 'src/Wheel.js', 'src/OpacityRange.js'],
+  output: {
+    dir: 'dist',
+    format: 'es',
+  },
+  external: ['react', 'classnames', 'react-jss', 'styled-jss'],
+  plugins: [
+    babel({
+      exclude: 'node_modules/**',
+    }),
+  ],
+  experimentalCodeSplitting: true,
 };

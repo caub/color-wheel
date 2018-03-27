@@ -5,8 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "node test",
-    "build": "rollup -c",
-    "demo": "rollup -w -c demo/rollup.config.js"
+    "build": "rollup -c"
   },
   "repository": {
     "type": "git",
@@ -24,18 +23,18 @@
   },
   "homepage": "https://github.com/caub/color-wheel#readme",
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.34",
-    "@babel/preset-react": "^7.0.0-beta.34",
-    "rollup": "^0.50.1",
-    "rollup-plugin-babel": "^4.0.0-beta.0"
+    "@babel/cli": "^7.0.0-beta.42",
+    "@babel/core": "^7.0.0-beta.42",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.42",
+    "@babel/preset-env": "^7.0.0-beta.42",
+    "@babel/preset-react": "^7.0.0-beta.42",
+    "rollup": "^0.57.1",
+    "rollup-plugin-babel": "^4.0.0-beta.2"
   },
   "dependencies": {
+    "classnames": "^2.2.5",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "styled-components": "^2.2.4"
-  },
-  "peerDependencies": {
-    "react": "^16.2.0",
-    "styled-components": "^2.2.4"
+    "react-jss": "^8.3.5",
+    "styled-jss": "^2.2.2"
   }
 }
