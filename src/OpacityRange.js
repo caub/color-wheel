@@ -11,11 +11,9 @@ const Range = styled('div')({
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
-
   marginTop: '1.5em',
-  userSelect: 'none',
 
-  'input[type=range]': {
+  '& input[type="range"]': {
     '--gray': 'rgba(120, 120, 120, 0.6)',
     backgroundColor: 'rgba(0, 0, 0, 0)',
     borderRadius: 25,
@@ -30,21 +28,16 @@ const Range = styled('div')({
     backgroundImage: `linear-gradient(45deg, var(--gray) 25%, transparent 25%, transparent 75%, var(--gray) 75%, var(--gray)),
       linear-gradient(45deg, var(--gray) 25%, transparent 25%, transparent 75%, var(--gray) 75%, var(--gray))`,
     backgroundSize: [16, 16],
-    backgroundPosition: [0, 0, 8, 8],
+    backgroundPosition: [[0, 0], [8, 8]],
   },
 
-  'input[type=range]::-webkit-slider-thumb': {
+  '& input[type="range"]::-webkit-slider-thumb': {
     content: '""',
     borderRadius: '50%',
     border: 'solid 2px rgb(255, 255, 255)',
     height: 22,
     width: 22,
     '-webkit-appearance': 'none',
-  },
-  'input[type=number]': {
-    width: 50,
-    fontSize: '1.4em',
-    marginLeft: '1em',
   },
 });
 

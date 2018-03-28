@@ -3,8 +3,7 @@
   "main": "index.js",
   "scripts": {
     "build": "NODE_ENV=production ../node_modules/.bin/rollup -c",
-    "serve": "docker run --name cw-nginx -p 8000:80 -v $PWD/demo:/usr/share/nginx/html:ro nginx:alpine || docker -ia cw-nginx",
-    "demo": "../node_modules/.bin/rollup -w -c demo/rollup.config.js"
+    "serve": "docker run --name cw-nginx -p 8000:80 -v $PWD:/usr/share/nginx/html:ro nginx:alpine || docker start -ia cw-nginx"
   },
   "dependencies": {
     "react-dom": "^16.2.0"
@@ -16,3 +15,4 @@
     "rollup-plugin-uglify": "^3.0.0"
   }
 }
+
