@@ -11,7 +11,6 @@ const Range = styled('div')({
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
-  marginTop: '1.5em',
 
   '& input[type="range"]': {
     '--gray': 'rgba(120, 120, 120, 0.6)',
