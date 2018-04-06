@@ -7,17 +7,24 @@ const styles = {
   '@global': {
     body: {
       margin: 0,
+      height: '100vh',
+      backgroundColor: 'var(--bg)',
     },
     '*': {
       boxSizing: 'border-box',
     },
   },
-  bg: {
+  content: {
+    position: 'fixed',
+    top: '20%',
+    bottom: '20%',
+    left: '20%',
+    right: '20%',
+    backgroundColor: '#eee',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '100vh',
-    border: '80px solid transparent',
+    borderRadius: '150px',
   },
   wrapper: {
     display: 'inline-flex',
@@ -31,18 +38,30 @@ const styles = {
 
 class Demo extends React.Component {
   state = { opacity: 0.6, color: [200, 1, 0.6] };
+
+  componentDidMount() {
+    this.update();
+  }
+
+  componentDidUpdate() {
+    this.update();
+  }
+
+  update() {
+    const { opacity, color: [h, s, l] } = this.state;
+    document.body.style.setProperty(
+      '--bg',
+      `hsla(${Math.round(h)},${Math.round(s * 100)}%,${Math.round(l * 100)}%,${opacity})`,
+    );
+  }
+
   render() {
     const { classes: _ } = this.props;
-    const { opacity, color: [h, s, l] } = this.state;
+    const { opacity, color } = this.state;
     return (
-      <div
-        className={_.bg}
-        style={{
-          borderColor: `hsla(${Math.round(h)},${Math.round(s * 100)}%,${Math.round(l * 100)}%,${opacity})`,
-        }}
-      >
+      <div className={_.content}>
         <div className={_.wrapper}>
-          <Wheel color={[h, s, l]} onChange={color => this.setState({ color })} />
+          <Wheel color={color} onChange={color => this.setState({ color })} />
           <OpacityRange
             value={opacity * 100}
             onChange={evt => this.setState({ opacity: evt.target.value / 100 })}

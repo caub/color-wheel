@@ -653,18 +653,25 @@ var OpacityRange = ((_ref) => {
 const styles$1 = {
   '@global': {
     body: {
-      margin: 0
+      margin: 0,
+      height: '100vh',
+      backgroundColor: 'var(--bg)'
     },
     '*': {
       boxSizing: 'border-box'
     }
   },
-  bg: {
+  content: {
+    position: 'fixed',
+    top: '20%',
+    bottom: '20%',
+    left: '20%',
+    right: '20%',
+    backgroundColor: '#eee',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '100vh',
-    border: '80px solid transparent'
+    borderRadius: '150px'
   },
   wrapper: {
     display: 'inline-flex',
@@ -691,9 +698,15 @@ class Demo extends React.Component {
     }), _temp;
   }
 
-  render() {
-    const _ = this.props.classes;
+  componentDidMount() {
+    this.update();
+  }
 
+  componentDidUpdate() {
+    this.update();
+  }
+
+  update() {
     const _state = this.state,
           opacity = _state.opacity,
           _state$color = _slicedToArray(_state.color, 3),
@@ -701,15 +714,20 @@ class Demo extends React.Component {
           s = _state$color[1],
           l = _state$color[2];
 
+    document.body.style.setProperty('--bg', `hsla(${Math.round(h)},${Math.round(s * 100)}%,${Math.round(l * 100)}%,${opacity})`);
+  }
+
+  render() {
+    const _ = this.props.classes;
+    const _state2 = this.state,
+          opacity = _state2.opacity,
+          color = _state2.color;
     return React.createElement("div", {
-      className: _.bg,
-      style: {
-        borderColor: `hsla(${Math.round(h)},${Math.round(s * 100)}%,${Math.round(l * 100)}%,${opacity})`
-      }
+      className: _.content
     }, React.createElement("div", {
       className: _.wrapper
     }, React.createElement(Wheel$1, {
-      color: [h, s, l],
+      color: color,
       onChange: color => this.setState({
         color
       })

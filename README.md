@@ -11,6 +11,13 @@ import ColorWheel from 'color-wheel';
 />
 ```
 
+### Develop
+
+```
+cd demo
+npm run serve
+npx run build -w
+```
 
 ### Early draft
 
