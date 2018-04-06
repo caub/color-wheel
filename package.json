@@ -1,21 +1,18 @@
 {
   "name": "color-wheel",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "wheel color picker",
   "main": "src/index.js",
   "scripts": {
     "test": "node test",
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "pub": "npm run build && cp README.md dist/ && cp package.json dist/ && npm publish dist"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/caub/color-wheel.git"
   },
-  "keywords": [
-    "color",
-    "picker",
-    "wheel"
-  ],
+  "keywords": ["color", "picker", "wheel"],
   "author": "caub",
   "license": "ISC",
   "bugs": {

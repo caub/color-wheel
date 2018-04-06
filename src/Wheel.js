@@ -1,7 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 import injectSheet from 'react-jss';
-import { move, createAnnulus, createTriangle, hwb2hsl } from './util';
+import { move, createAnnulus, createTriangle, hwb2hsl, hsl2hwb } from './util';
 
 const { PI } = Math;
 
@@ -76,19 +76,24 @@ class Wheel extends React.PureComponent {
 
     let [hue, s, l] = this.props.color || [];
 
-    // todo apply those intial values
-
-    const rotateWheel = (e, X, Y) => {
-      // rotate from mouse event, and X, Y center of wheel
-      const angle = Math.atan2(e.clientY - Y, e.clientX - X),
-        angleDeg = Math.round(angle * 180 / Math.PI * 100) / 100;
-      const x = Math.round(165 + 150 * Math.cos(angle)),
-        y = Math.round(165 + 150 * Math.sin(angle));
-      // console.log(angle, x, y, `hsl(${angleDeg}, 100%, 50%)`);
+    const updateWheel = angleRad => {
+      const angleDeg = Math.round(angleRad * 180 / PI * 100) / 100;
+      const x = Math.round(165 + 150 * Math.cos(angleRad)),
+        y = Math.round(165 + 150 * Math.sin(angleRad));
       this.hueSel.style.transform = `translate(${x}px, ${y}px)`;
       this.triangle.style.transform = `rotate(${angleDeg}deg)`;
       this.twrap.style.backgroundColor = `hsl(${angleDeg}, 100%, 50%)`;
-      hue = normalizeHue(angleDeg);
+    };
+
+    // todo hsl2hwb etc.. to get back position in canvas from s,l (see last function)
+    updateWheel(hue * 2 * PI);
+
+    const rotateWheel = (e, X, Y) => {
+      // rotate from mouse event, and X, Y center of wheel
+      const angle = Math.atan2(e.clientY - Y, e.clientX - X);
+      updateWheel(angle);
+      // console.log(angle, x, y, `hsl(${angleDeg}, 100%, 50%)`);
+      hue = normalizeHue(angle * 180 / PI);
       this.props.onChange([hue, s, l]);
     };
 
@@ -118,6 +123,7 @@ class Wheel extends React.PureComponent {
         let x = e.clientX - R.left;
         let y = e.clientY - R.top;
         if (e.target !== this.canvas) {
+          // when dragging from outside
           const alpha = Math.atan2(y, x);
           const beta = ((alpha - angleRad) % (2 * PI) + 2 * PI) % (2 * PI);
 

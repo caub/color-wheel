@@ -309,7 +309,8 @@ if (!String.prototype.padStart) {
 
 const _cu$default = colorutil,
       hsl2rgb = _cu$default.hsl2rgb,
-      hwb2hsl = _cu$default.hwb2hsl;
+      hwb2hsl = _cu$default.hwb2hsl,
+      hsl2hwb = _cu$default.hsl2hwb;
 const PI = Math.PI;
 function createAnnulus(canvas) {
   var width = canvas.width,
@@ -483,20 +484,26 @@ class Wheel extends React.PureComponent {
         _ref2 = _slicedToArray(_ref, 3),
         hue = _ref2[0],
         s = _ref2[1],
-        l = _ref2[2]; // todo apply those intial values
+        l = _ref2[2];
 
-
-    const rotateWheel = (e, X, Y) => {
-      // rotate from mouse event, and X, Y center of wheel
-      const angle = Math.atan2(e.clientY - Y, e.clientX - X),
-            angleDeg = Math.round(angle * 180 / Math.PI * 100) / 100;
-      const x = Math.round(165 + 150 * Math.cos(angle)),
-            y = Math.round(165 + 150 * Math.sin(angle)); // console.log(angle, x, y, `hsl(${angleDeg}, 100%, 50%)`);
-
+    const updateWheel = angleRad => {
+      const angleDeg = Math.round(angleRad * 180 / PI$1 * 100) / 100;
+      const x = Math.round(165 + 150 * Math.cos(angleRad)),
+            y = Math.round(165 + 150 * Math.sin(angleRad));
       this.hueSel.style.transform = `translate(${x}px, ${y}px)`;
       this.triangle.style.transform = `rotate(${angleDeg}deg)`;
       this.twrap.style.backgroundColor = `hsl(${angleDeg}, 100%, 50%)`;
-      hue = normalizeHue(angleDeg);
+    }; // todo hsl2hwb etc.. to get back position in canvas from s,l (see last function)
+
+
+    updateWheel(hue * 2 * PI$1);
+
+    const rotateWheel = (e, X, Y) => {
+      // rotate from mouse event, and X, Y center of wheel
+      const angle = Math.atan2(e.clientY - Y, e.clientX - X);
+      updateWheel(angle); // console.log(angle, x, y, `hsl(${angleDeg}, 100%, 50%)`);
+
+      hue = normalizeHue(angle * 180 / PI$1);
       this.props.onChange([hue, s, l]);
     };
 
@@ -526,6 +533,7 @@ class Wheel extends React.PureComponent {
         let y = e.clientY - R.top;
 
         if (e.target !== this.canvas) {
+          // when dragging from outside
           const alpha = Math.atan2(y, x);
           const beta = ((alpha - angleRad) % (2 * PI$1) + 2 * PI$1) % (2 * PI$1);
           const med = beta >= 0 && beta < 2 * PI$1 / 3 ? PI$1 / 3 : beta >= 2 * PI$1 / 3 && beta < 4 * PI$1 / 3 ? -PI$1 : -PI$1 / 3;

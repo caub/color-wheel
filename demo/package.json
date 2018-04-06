@@ -3,7 +3,8 @@
   "main": "index.js",
   "scripts": {
     "build": "NODE_ENV=production ../node_modules/.bin/rollup -c",
-    "serve": "docker run --name nginx-cw -d -p 8000:80 -v $PWD/nginx.conf:/etc/nginx/conf.d/default.conf:ro -v $PWD:/usr/share/nginx/html:ro nginx:alpine || docker start -ia nginx-cw"
+    "serve":
+      "docker run --name nginx-cw -d -p 8000:80 -v $PWD:/usr/share/nginx/html:ro caub/nginx-dev || docker start -ia nginx-cw"
   },
   "dependencies": {
     "react-dom": "^16.3.1"
