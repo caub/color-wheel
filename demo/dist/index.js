@@ -307,7 +307,9 @@ if (!String.prototype.padStart) {
 }
 });
 
-const hsl2rgb = colorutil.hsl2rgb;
+const _cu$default = colorutil,
+      hsl2rgb = _cu$default.hsl2rgb,
+      hwb2hsl = _cu$default.hwb2hsl;
 const PI = Math.PI;
 function createAnnulus(canvas) {
   var width = canvas.width,
@@ -408,6 +410,10 @@ function move(e, container, cb) {
 }
 
 const PI$1 = Math.PI;
+const L = 135 * 3 ** 0.5; // todo export this (related to canvas width height below)
+
+const normalizeHue = hue => (hue + 360) % 360 / 360;
+
 const styles = {
   section: {
     padding: '2em',
@@ -477,7 +483,8 @@ class Wheel extends React.PureComponent {
         _ref2 = _slicedToArray(_ref, 3),
         hue = _ref2[0],
         s = _ref2[1],
-        l = _ref2[2];
+        l = _ref2[2]; // todo apply those intial values
+
 
     const rotateWheel = (e, X, Y) => {
       // rotate from mouse event, and X, Y center of wheel
@@ -489,7 +496,7 @@ class Wheel extends React.PureComponent {
       this.hueSel.style.transform = `translate(${x}px, ${y}px)`;
       this.triangle.style.transform = `rotate(${angleDeg}deg)`;
       this.twrap.style.backgroundColor = `hsl(${angleDeg}, 100%, 50%)`;
-      hue = angleDeg;
+      hue = normalizeHue(angleDeg);
       this.props.onChange([hue, s, l]);
     };
 
@@ -522,13 +529,30 @@ class Wheel extends React.PureComponent {
           const alpha = Math.atan2(y, x);
           const beta = ((alpha - angleRad) % (2 * PI$1) + 2 * PI$1) % (2 * PI$1);
           const med = beta >= 0 && beta < 2 * PI$1 / 3 ? PI$1 / 3 : beta >= 2 * PI$1 / 3 && beta < 4 * PI$1 / 3 ? -PI$1 : -PI$1 / 3;
-          const rho = h / Math.cos(beta - med);
-          x = rho * Math.cos(alpha);
-          y = rho * Math.sin(alpha);
+          const r = h / Math.cos(beta - med);
+          x = r * Math.cos(alpha);
+          y = r * Math.sin(alpha);
         }
 
-        this.fadeSel.style.transform = `rotate(${-angle}deg) translate(${x}px, ${y}px)`; // todo find and update saturation / lightness from that
+        const hueRad = hue * 2 * PI$1;
+        const X = x * Math.cos(hueRad) + y * Math.sin(hueRad);
+        const Y = x * Math.sin(hueRad) - y * Math.cos(hueRad);
+        const x0 = 135 - X; // distance to pure point (point with 0 whiteness, 0 blackness)
 
+        const l0 = x0 * L / 202.5; // 202.5 = 135 * 3/2, the triangle height
+
+        const white = Math.max(0, Math.min(1, (l0 / 2 - Y) / L)); // distance from white to black side, parallel to base
+
+        const black = Math.max(0, Math.min(1, (Y + l0 / 2) / L));
+        this.fadeSel.style.transform = `rotate(${-angle}deg) translate(${x}px, ${y}px)`;
+
+        var _hwb2hsl = hwb2hsl(hue, white, black);
+
+        var _hwb2hsl2 = _slicedToArray(_hwb2hsl, 3);
+
+        hue = _hwb2hsl2[0];
+        s = _hwb2hsl2[1];
+        l = _hwb2hsl2[2];
         this.props.onChange([hue, s, l]);
       });
     };
@@ -693,7 +717,7 @@ class Demo extends React.Component {
       writable: true,
       value: {
         opacity: 0.6,
-        color: [200, 1, 0.6]
+        color: [0, 1, 0.6]
       }
     }), _temp;
   }
@@ -714,7 +738,7 @@ class Demo extends React.Component {
           s = _state$color[1],
           l = _state$color[2];
 
-    document.body.style.setProperty('--bg', `hsla(${Math.round(h)},${Math.round(s * 100)}%,${Math.round(l * 100)}%,${opacity})`);
+    document.body.style.setProperty('--bg', `hsla(${Math.round(h * 360)},${Math.round(s * 100)}%,${Math.round(l * 100)}%,${opacity})`);
   }
 
   render() {

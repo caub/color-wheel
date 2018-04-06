@@ -37,7 +37,7 @@ const styles = {
 };
 
 class Demo extends React.Component {
-  state = { opacity: 0.6, color: [200, 1, 0.6] };
+  state = { opacity: 0.6, color: [0, 1, 0.6] };
 
   componentDidMount() {
     this.update();
@@ -51,7 +51,7 @@ class Demo extends React.Component {
     const { opacity, color: [h, s, l] } = this.state;
     document.body.style.setProperty(
       '--bg',
-      `hsla(${Math.round(h)},${Math.round(s * 100)}%,${Math.round(l * 100)}%,${opacity})`,
+      `hsla(${Math.round(h * 360)},${Math.round(s * 100)}%,${Math.round(l * 100)}%,${opacity})`,
     );
   }
 

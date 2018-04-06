@@ -1,9 +1,13 @@
 import React from 'react';
 import cn from 'classnames';
 import injectSheet from 'react-jss';
-import { move, createAnnulus, createTriangle } from './util';
+import { move, createAnnulus, createTriangle, hwb2hsl } from './util';
 
 const { PI } = Math;
+
+const L = 135 * 3 ** 0.5; // todo export this (related to canvas width height below)
+
+const normalizeHue = hue => ((hue + 360) % 360) / 360;
 
 const styles = {
   section: {
@@ -72,6 +76,8 @@ class Wheel extends React.PureComponent {
 
     let [hue, s, l] = this.props.color || [];
 
+    // todo apply those intial values
+
     const rotateWheel = (e, X, Y) => {
       // rotate from mouse event, and X, Y center of wheel
       const angle = Math.atan2(e.clientY - Y, e.clientX - X),
@@ -82,7 +88,7 @@ class Wheel extends React.PureComponent {
       this.hueSel.style.transform = `translate(${x}px, ${y}px)`;
       this.triangle.style.transform = `rotate(${angleDeg}deg)`;
       this.twrap.style.backgroundColor = `hsl(${angleDeg}, 100%, 50%)`;
-      hue = angleDeg;
+      hue = normalizeHue(angleDeg);
       this.props.onChange([hue, s, l]);
     };
 
@@ -117,13 +123,21 @@ class Wheel extends React.PureComponent {
 
           const med =
             beta >= 0 && beta < 2 * PI / 3 ? PI / 3 : beta >= 2 * PI / 3 && beta < 4 * PI / 3 ? -PI : -PI / 3;
-          const rho = h / Math.cos(beta - med);
-          x = rho * Math.cos(alpha);
-          y = rho * Math.sin(alpha);
+          const r = h / Math.cos(beta - med);
+          x = r * Math.cos(alpha);
+          y = r * Math.sin(alpha);
         }
 
+        const hueRad = hue * 2 * PI;
+        const X = x * Math.cos(hueRad) + y * Math.sin(hueRad);
+        const Y = x * Math.sin(hueRad) - y * Math.cos(hueRad);
+        const x0 = 135 - X; // distance to pure point (point with 0 whiteness, 0 blackness)
+        const l0 = x0 * L / 202.5; // 202.5 = 135 * 3/2, the triangle height
+        const white = Math.max(0, Math.min(1, (l0 / 2 - Y) / L)); // distance from white to black side, parallel to base
+        const black = Math.max(0, Math.min(1, (Y + l0 / 2) / L));
+
         this.fadeSel.style.transform = `rotate(${-angle}deg) translate(${x}px, ${y}px)`;
-        // todo find and update saturation / lightness from that
+        [hue, s, l] = hwb2hsl(hue, white, black);
         this.props.onChange([hue, s, l]);
       });
     };
