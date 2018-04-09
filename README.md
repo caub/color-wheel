@@ -1,25 +1,15 @@
-## Color Wheel [WIP]
+## Color Wheel
 
-Color picker React component
+[Color picker React component](https://caub.github.io/color-wheel/demo)
 
 ```js
 import ColorWheel from 'color-wheel';
 
 // usage:
-<ColorWheel
-	onChange={color => console.log(color)}
-/>
+<ColorWheel onChange={color => console.log(color)} />;
 ```
 
-### Develop
+### Drafts
 
-```
-cd demo
-npm run serve
-npx run build -w
-```
-
-### Early draft
-
-- [draft](//caub.github.io/color-wheel/draft)
-- [disassembled](//caub.github.io/color-wheel/draft-parts)
+* [draft](//caub.github.io/color-wheel/draft)
+* [disassembled](//caub.github.io/color-wheel/draft-parts)

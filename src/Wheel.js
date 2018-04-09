@@ -9,6 +9,30 @@ const L = 135 * 3 ** 0.5; // todo export this (related to canvas width height be
 
 const normalizeHue = hue => ((hue + 360) % 360) / 360;
 
+const rotate = ([x, y], angleRad) => [
+  x * Math.cos(angleRad) - y * Math.sin(angleRad),
+  x * Math.sin(angleRad) + y * Math.cos(angleRad),
+];
+
+/**
+ * convert coords in the triangle, (without the rotation) to [saturation, lightness], via whiteness/blackness
+ * @param {[Int, Int]}
+ */
+const triangleCoordsToSL = ([X, Y]) => {
+  const x0 = 135 - X; // distance to pure point (point with 0 whiteness, 0 blackness)
+  const l0 = x0 * L / 202.5; // 202.5 = 135 * 3/2, the triangle height
+  const white = Math.max(0, Math.min(1, (Y + l0 / 2) / L)); // distance from white to black side, parallel to base
+  const black = Math.max(0, Math.min(1, (l0 / 2 - Y) / L));
+  return hwb2hsl(0, white, black).slice(1); // hue is unchanged, and not needed to convert hw to sl
+};
+const sLToTriangleCoords = ([s, l]) => {
+  const [, white, black] = hsl2hwb(0, s, l);
+  const l0 = (white + black) * L;
+  const Y = white * L - l0 / 2;
+  const x0 = l0 * 202.5 / L;
+  return [135 - x0, Y];
+};
+
 const styles = {
   section: {
     padding: '2em',
@@ -74,7 +98,7 @@ class Wheel extends React.PureComponent {
     createTriangle(this.canvas);
     createAnnulus(this.c2);
 
-    let [hue, s, l] = this.props.color || [];
+    let [hue, saturation, lightness] = this.props.color || [];
 
     const updateWheel = angleRad => {
       const angleDeg = Math.round(angleRad * 180 / PI * 100) / 100;
@@ -85,8 +109,13 @@ class Wheel extends React.PureComponent {
       this.twrap.style.backgroundColor = `hsl(${angleDeg}, 100%, 50%)`;
     };
 
-    // todo hsl2hwb etc.. to get back position in canvas from s,l (see last function)
+    // initialize wheel angle
     updateWheel(hue * 2 * PI);
+    // initialize triangle coords
+    const [X, Y] = sLToTriangleCoords([saturation, lightness]);
+    const angle = parseFloat(this.triangle.style.transform.slice(7)) || 0;
+    const [x, y] = rotate([X, Y], hue * 2 * PI);
+    this.fadeSel.style.transform = `rotate(${-angle}deg) translate(${x}px, ${y}px)`;
 
     const rotateWheel = (e, X, Y) => {
       // rotate from mouse event, and X, Y center of wheel
@@ -94,7 +123,7 @@ class Wheel extends React.PureComponent {
       updateWheel(angle);
       // console.log(angle, x, y, `hsl(${angleDeg}, 100%, 50%)`);
       hue = normalizeHue(angle * 180 / PI);
-      this.props.onChange([hue, s, l]);
+      this.props.onChange([hue, saturation, lightness]);
     };
 
     this.c2.onmousedown = e => {
@@ -135,16 +164,13 @@ class Wheel extends React.PureComponent {
         }
 
         const hueRad = hue * 2 * PI;
-        const X = x * Math.cos(hueRad) + y * Math.sin(hueRad);
-        const Y = x * Math.sin(hueRad) - y * Math.cos(hueRad);
-        const x0 = 135 - X; // distance to pure point (point with 0 whiteness, 0 blackness)
-        const l0 = x0 * L / 202.5; // 202.5 = 135 * 3/2, the triangle height
-        const white = Math.max(0, Math.min(1, (l0 / 2 - Y) / L)); // distance from white to black side, parallel to base
-        const black = Math.max(0, Math.min(1, (Y + l0 / 2) / L));
+        const [X, Y] = rotate([x, y], -hueRad);
+
+        [saturation, lightness] = triangleCoordsToSL([X, Y]);
+
+        this.props.onChange([hue, saturation, lightness]);
 
         this.fadeSel.style.transform = `rotate(${-angle}deg) translate(${x}px, ${y}px)`;
-        [hue, s, l] = hwb2hsl(hue, white, black);
-        this.props.onChange([hue, s, l]);
       });
     };
   }

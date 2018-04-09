@@ -1,6 +1,6 @@
 {
   "name": "color-wheel",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "wheel color picker",
   "main": "src/index.js",
   "scripts": {
@@ -12,7 +12,11 @@
     "type": "git",
     "url": "git+https://github.com/caub/color-wheel.git"
   },
-  "keywords": ["color", "picker", "wheel"],
+  "keywords": [
+    "color",
+    "picker",
+    "wheel"
+  ],
   "author": "caub",
   "license": "ISC",
   "bugs": {
@@ -32,6 +36,12 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "colorutil": "^3.0.2",
+    "react": "^16.3.1",
+    "react-jss": "^8.4.0",
+    "styled-jss": "^2.2.2"
+  },
+  "peerDependencies": {
+    "classnames": "^2.2.5",
     "react": "^16.3.1",
     "react-jss": "^8.4.0",
     "styled-jss": "^2.2.2"

@@ -37,7 +37,7 @@ const styles = {
 };
 
 class Demo extends React.Component {
-  state = { opacity: 0.6, color: [0, 1, 0.6] };
+  state = { opacity: 1, color: [0, 0.75, 0.8] };
 
   componentDidMount() {
     this.update();
