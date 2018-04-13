@@ -1,8 +1,7 @@
 {
   "name": "color-wheel",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "wheel color picker",
-  "main": "src/index.js",
   "scripts": {
     "test": "node test",
     "build": "rollup -c",
@@ -31,11 +30,12 @@
     "@babel/preset-env": "^7.0.0-beta.44",
     "@babel/preset-react": "^7.0.0-beta.44",
     "rollup": "^0.57.1",
-    "rollup-plugin-babel": "^4.0.0-beta.3"
+    "rollup-plugin-babel": "^4.0.0-beta.4",
+    "rollup-plugin-node-resolve": "^3.3.0"
   },
   "dependencies": {
     "classnames": "^2.2.5",
-    "colorutil": "^3.0.2",
+    "colorutil": "^4.1.2",
     "react": "^16.3.1",
     "react-jss": "^8.4.0",
     "styled-jss": "^2.2.2"

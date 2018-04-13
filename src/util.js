@@ -1,10 +1,6 @@
-import * as cu from 'colorutil';
+import { hsl2rgb } from 'colorutil/src';
 
-// colorutil is broken for ES import, will fix later
-const { hsl2rgb, hwb2hsl, hsl2hwb } = cu.default;
 const { PI } = Math;
-
-export { hwb2hsl, hsl2hwb };
 
 export function createAnnulus(canvas) {
   var { width, height } = canvas;
