@@ -154,7 +154,7 @@ svg {
 	</div>
 </section>
 
-<script src="https://unpkg.com/colorutil@3.0.2/index.js"></script>
+<script src="https://unpkg.com/color-tf"></script>
 <script>
 const {PI} = Math;
 
@@ -221,7 +221,7 @@ function createAnnulus() {
 
 	for (var j = 0; j < height; j++) {
 		for (var i = 0; i < width; i++) {
-			var [r, g, b] = hsl2rgb((Math.atan2(j-half, i-half))/(2*PI), 1, .5).map(x=>Math.round(x*255));
+			var [r, g, b] = colorTf.hsl2rgb((Math.atan2(j-half, i-half))/(2*PI), 1, .5).map(x=>Math.round(x*255));
 			var index = (j*width+i)*4;
 			data[index] = r;
 			data[index+1] = g;

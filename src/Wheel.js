@@ -1,7 +1,8 @@
 import React from 'react';
 import cn from 'classnames';
 import injectSheet from 'react-jss';
-import { hwb2hsl, hsl2hwb } from 'colorutil/src';
+import hwb2hsl from 'color-tf/src/hwb2hsl';
+import hsl2hwb from 'color-tf/src/hsl2hwb';
 import { move, createAnnulus, createTriangle } from './util';
 
 const { PI } = Math;

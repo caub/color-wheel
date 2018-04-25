@@ -1,4 +1,4 @@
-import { hsl2rgb } from 'colorutil/src';
+import hsl2rgb from 'color-tf/src/hsl2rgb';
 
 const { PI } = Math;
 

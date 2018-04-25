@@ -3,10 +3,10 @@
   "main": "index.js",
   "scripts": {
     "build": "NODE_ENV=production ../node_modules/.bin/rollup -c",
-    "serve": "docker run --name nginx-cw -d -p 8000:80 -v $PWD:/usr/share/nginx/html:ro caub/nginx-dev || docker start -ia nginx-cw"
+    "serve": "docker run --rm --name nginx-cw -p 8000:80 -v $PWD:/usr/share/nginx/html:ro caub/nginx-dev"
   },
   "dependencies": {
-    "react-dom": "^16.3.1"
+    "react-dom": "^16.3.2"
   },
   "devDependencies": {
     "rollup-plugin-commonjs": "^9.1.0",
