@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import injectSheet from 'react-jss';
+import injectSheet from 'react-jss/lib/injectSheet';
 import Wheel, { OpacityRange } from '../src';
 
 const styles = {
@@ -48,7 +48,10 @@ class Demo extends React.Component {
   }
 
   update() {
-    const { opacity, color: [h, s, l] } = this.state;
+    const {
+      opacity,
+      color: [h, s, l],
+    } = this.state;
     document.body.style.setProperty(
       '--bg',
       `hsla(${Math.round(h * 360)},${Math.round(s * 100)}%,${Math.round(l * 100)}%,${opacity})`,

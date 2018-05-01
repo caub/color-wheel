@@ -1,18 +1,20 @@
 import React from 'react';
-import styled from 'styled-jss';
+import cn from 'classnames';
+import injectSheet from 'react-jss/lib/injectSheet';
 
-const Range = styled('div')({
-  position: 'relative',
-  backgroundImage: 'linear-gradient(to right, rgba(255, 255, 255, 1), rgba(0, 0, 0, 0.4))',
-  borderRadius: 25,
-  height: 16,
-  width: 250,
-  lineHeight: 0,
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-
-  '& input[type="range"]': {
+const styles = {
+  root: {
+    position: 'relative',
+    backgroundImage: 'linear-gradient(to right, rgba(255, 255, 255, 1), rgba(0, 0, 0, 0.4))',
+    borderRadius: 25,
+    height: 16,
+    width: 250,
+    lineHeight: 0,
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  input: {
     '--gray': 'rgba(120, 120, 120, 0.6)',
     backgroundColor: 'rgba(0, 0, 0, 0)',
     borderRadius: 25,
@@ -28,20 +30,22 @@ const Range = styled('div')({
       linear-gradient(45deg, var(--gray) 25%, transparent 25%, transparent 75%, var(--gray) 75%, var(--gray))`,
     backgroundSize: [16, 16],
     backgroundPosition: [[0, 0], [8, 8]],
-  },
 
-  '& input[type="range"]::-webkit-slider-thumb': {
-    content: '""',
-    borderRadius: '50%',
-    border: 'solid 2px rgb(255, 255, 255)',
-    height: 22,
-    width: 22,
-    '-webkit-appearance': 'none',
-  },
-});
+    '&::-webkit-slider-thumb': {
+      content: '""',
+      borderRadius: '50%',
+      border: 'solid 2px rgb(255, 255, 255)',
+      height: 22,
+      width: 22,
+      '-webkit-appearance': 'none',
+    }
+  }
+};
 
-export default ({ wrapperProps, ...props }) => (
-  <Range {...wrapperProps}>
-    <input type="range" min="0" max="100" {...props} />
-  </Range>
+const OpacityRangeRaw = ({ classes, rootProps: { className: rootClassName, ...rootProps }, className, ...props }) => (
+  <div className={cn(rootClassName, classes.root)} {...rootProps}>
+    <input type="range" min="0" max="100" className={cn(className, classes.input)} {...props} />
+  </div>
 );
+
+export default injectSheet(styles)(OpacityRangeRaw);

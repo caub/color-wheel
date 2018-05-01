@@ -7,7 +7,7 @@ export default {
     dir: 'dist',
     format: 'es',
   },
-  external: ['react', 'classnames', 'react-jss', 'styled-jss'],
+  external: ['react', 'classnames', 'react-jss/lib/injectSheet'],
   plugins: [
     resolve({
       jsnext: true,

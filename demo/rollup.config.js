@@ -4,9 +4,9 @@ import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
 
 export default {
-  input: ['index.js', 'vendor.js'],
+  input: ['demo/index.js', 'demo/vendor.js'],
   output: {
-    dir: 'dist',
+    dir: 'demo/dist',
     format: 'es',
   },
   plugins: [
@@ -15,15 +15,15 @@ export default {
     }),
     resolve({
       jsnext: true,
-      customResolveOptions: {
-        moduleDirectory: ['node_modules', '../node_modules'],
-      },
+      // customResolveOptions: {
+      //   moduleDirectory: 'node_modules',
+      // },
     }),
     commonjs({
-      include: ['node_modules/**', '../node_modules/**'],
+      include: 'node_modules/**',
     }),
     babel({
-      exclude: ['node_modules/**', '../node_modules/**'],
+      exclude: 'node_modules/**',
     }),
   ],
   watch: {
