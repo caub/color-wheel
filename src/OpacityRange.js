@@ -42,7 +42,7 @@ const styles = {
   }
 };
 
-const OpacityRangeRaw = ({ classes, rootProps: { className: rootClassName, ...rootProps }, className, ...props }) => (
+const OpacityRangeRaw = ({ classes, rootProps: { className: rootClassName, ...rootProps } = {}, className, ...props }) => (
   <div className={cn(rootClassName, classes.root)} {...rootProps}>
     <input type="range" min="0" max="100" className={cn(className, classes.input)} {...props} />
   </div>

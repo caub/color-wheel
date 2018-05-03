@@ -1,11 +1,11 @@
 {
   "name": "color-wheel",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Color Wheel picker",
   "scripts": {
     "build": "rm -rf dist && rollup -c",
     "build:demo": "rm -rf demo/dist && NODE_ENV=production rollup -c demo/rollup.config.js",
-    "pub": "npm run build && cp ../../README.md dist/ && cp package.json dist/ && npm publish dist"
+    "pub": "npm run build && cp README.md dist/ && cp package.json dist/ && npm publish dist"
   },
   "repository": "https://github.com/caub/color-wheel/packages/core",
   "keywords": [

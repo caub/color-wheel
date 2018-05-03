@@ -1,4 +1,4 @@
-import { a as commonjsGlobal, b as unwrapExports, c as createCommonjsModule, d as React, e as injectSheet, f as ReactDOM } from './chunk-207b5616.js';
+import { a as commonjsGlobal, b as unwrapExports, c as createCommonjsModule, d as _react, e as _propTypes, f as _jss, g as _ns, h as _contextTypes, i as _propTypes2, j as injectSheet_1, k as _theming, l as React, m as injectSheet, n as ReactDOM } from './chunk-cdf6a347.js';
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -96,6 +96,202 @@ function _iterableToArrayLimit(arr, i) {
 function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance");
 }
+
+var JssProvider_1 = createCommonjsModule(function (module, exports) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+
+
+
+
+
+
+
+
+var ns = _interopRequireWildcard(_ns);
+
+
+
+var _contextTypes2 = _interopRequireDefault(_contextTypes);
+
+
+
+var _propTypes3 = _interopRequireDefault(_propTypes2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var JssProvider = function (_Component) {
+  _inherits(JssProvider, _Component);
+
+  function JssProvider() {
+    _classCallCheck(this, JssProvider);
+
+    return _possibleConstructorReturn(this, (JssProvider.__proto__ || Object.getPrototypeOf(JssProvider)).apply(this, arguments));
+  }
+
+  _createClass(JssProvider, [{
+    key: 'getChildContext',
+
+
+    // JssProvider can be nested. We allow to overwrite any context prop at any level.
+    // 1. Check if there is a value passed over props.
+    // 2. If value was passed, we set it on the child context.
+    // 3. If value was not passed, we proxy parent context (default context behaviour).
+    value: function getChildContext() {
+      var _props = this.props,
+          registry = _props.registry,
+          classNamePrefix = _props.classNamePrefix,
+          localJss = _props.jss,
+          generateClassName = _props.generateClassName;
+
+      var sheetOptions = this.context[ns.sheetOptions] || {};
+      var context = _defineProperty({}, ns.sheetOptions, sheetOptions);
+
+      if (registry) {
+        context[ns.sheetsRegistry] = registry;
+        // This way we identify a new request on the server, because user will create
+        // a new Registry instance for each.
+        if (registry !== this.registry) {
+          // We reset managers because we have to regenerate all sheets for the new request.
+          this.managers = {};
+          this.registry = registry;
+        }
+      }
+
+      // Make sure we don't loose managers when JssProvider is used inside of a stateful
+      // component which decides to rerender.
+      context[ns.managers] = this.managers;
+
+      if (generateClassName) {
+        sheetOptions.generateClassName = generateClassName;
+      } else if (!sheetOptions.generateClassName) {
+        if (!this.generateClassName) {
+          var createGenerateClassName = _jss.createGenerateClassNameDefault;
+          if (localJss && localJss.options.createGenerateClassName) {
+            createGenerateClassName = localJss.options.createGenerateClassName;
+          }
+          // Make sure we don't loose the generator when JssProvider is used inside of a stateful
+          // component which decides to rerender.
+          this.generateClassName = createGenerateClassName();
+        }
+
+        sheetOptions.generateClassName = this.generateClassName;
+      }
+
+      if (classNamePrefix) sheetOptions.classNamePrefix = classNamePrefix;
+      if (localJss) context[ns.jss] = localJss;
+
+      return context;
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react.Children.only(this.props.children);
+    }
+  }]);
+
+  return JssProvider;
+}(_react.Component);
+
+JssProvider.propTypes = _extends({}, _propTypes3['default'], {
+  generateClassName: _propTypes.func,
+  classNamePrefix: _propTypes.string,
+  children: _propTypes.node.isRequired
+});
+JssProvider.childContextTypes = _contextTypes2['default'];
+JssProvider.contextTypes = _contextTypes2['default'];
+exports['default'] = JssProvider;
+});
+
+unwrapExports(JssProvider_1);
+
+var lib = createCommonjsModule(function (module, exports) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+
+
+Object.defineProperty(exports, 'ThemeProvider', {
+  enumerable: true,
+  get: function get() {
+    return _theming.ThemeProvider;
+  }
+});
+Object.defineProperty(exports, 'withTheme', {
+  enumerable: true,
+  get: function get() {
+    return _theming.withTheme;
+  }
+});
+Object.defineProperty(exports, 'createTheming', {
+  enumerable: true,
+  get: function get() {
+    return _theming.createTheming;
+  }
+});
+
+
+
+Object.defineProperty(exports, 'JssProvider', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(JssProvider_1)['default'];
+  }
+});
+
+
+
+Object.defineProperty(exports, 'jss', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_jss)['default'];
+  }
+});
+Object.defineProperty(exports, 'SheetsRegistry', {
+  enumerable: true,
+  get: function get() {
+    return _jss.SheetsRegistry;
+  }
+});
+Object.defineProperty(exports, 'createGenerateClassName', {
+  enumerable: true,
+  get: function get() {
+    return _jss.createGenerateClassNameDefault;
+  }
+});
+
+
+
+Object.defineProperty(exports, 'default', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(injectSheet_1)['default'];
+  }
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+});
+
+var injectSheet$1 = unwrapExports(lib);
 
 var classnames = createCommonjsModule(function (module) {
 /*!
@@ -277,7 +473,7 @@ var rgb2hwb = ((R, G, B) => {
   return [hue / 6, min, b];
 });
 
-var lib = /*#__PURE__*/Object.freeze({
+var lib$1 = /*#__PURE__*/Object.freeze({
   hsl2hsv: hsl2hsv,
   hsl2rgb: hsl2rgb,
   hsv2hsl: hsv2hsl,
@@ -301,7 +497,7 @@ var libHex = /*#__PURE__*/Object.freeze({
   rgbToHex: rgbToHex
 });
 
-const libKeys = Object.keys(lib);
+const libKeys = Object.keys(lib$1);
 /**
  * @return the shortest (inverted) path fn between 2 keys in lib object
  */
@@ -315,10 +511,10 @@ const getPath = (fromKey, toKey) => {
     const newNodes = [];
 
     for (const k of nodes) {
-      if (lib[k + '2' + toKey]) {
+      if (lib$1[k + '2' + toKey]) {
         // done, we can stop
         const arr = [toKey, k];
-        let fn = lib[k + '2' + toKey];
+        let fn = lib$1[k + '2' + toKey];
 
         for (let key = k; visited.has(key) && key !== fromKey; key = visited.get(key)) {
           // compose functions while there's a parent
@@ -346,21 +542,21 @@ const roundH = ([h, s, l]) => [Math.round(360 * h) % 360, Math.round(100 * s), M
  */
 
 
-var proxy = new Proxy(new Map([...Object.entries(lib), ...Object.entries(libHex)]), {
+var proxy = new Proxy(new Map([...Object.entries(lib$1), ...Object.entries(libHex)]), {
   get: (map, key) => {
     if (typeof key !== 'string') return map;
     if (map.has(key)) return map.get(key);
     const fromKey = key.slice(0, 3);
     const toKey = key.slice(-3).toLowerCase();
     const k = fromKey + '2' + toKey;
-    let fn = lib[k];
+    let fn = lib$1[k];
 
     if (!fn) {
       // todo check fromKey, toKey are in available keys, else getPath might be in infinite loop
       const path = getPath(fromKey, toKey);
       const funcs = Array.from({
         length: path.length - 1
-      }, (_, i) => lib[`${path[i + 1]}2${path[i]}`]);
+      }, (_, i) => lib$1[`${path[i + 1]}2${path[i]}`]);
       fn = funcs.reduceRight((func, f) => (...a) => f(...func(...a)));
       map.set(k, fn);
     }
@@ -779,8 +975,10 @@ const styles$1 = {
 
 const OpacityRangeRaw = (_ref) => {
   let classes = _ref.classes,
-      _ref$rootProps = _ref.rootProps,
-      rootClassName = _ref$rootProps.className,
+      _ref$rootProps = _ref.rootProps;
+  _ref$rootProps = _ref$rootProps === void 0 ? {} : _ref$rootProps;
+
+  let rootClassName = _ref$rootProps.className,
       rootProps = _objectWithoutProperties(_ref$rootProps, ["className"]),
       className = _ref.className,
       props = _objectWithoutProperties(_ref, ["classes", "rootProps", "className"]);
@@ -878,7 +1076,7 @@ class Demo extends React.Component {
       onChange: evt => this.setState({
         opacity: evt.target.value / 100
       }),
-      wrapperProps: {
+      rootProps: {
         className: _.opacity
       }
     })));
@@ -886,5 +1084,5 @@ class Demo extends React.Component {
 
 }
 
-const DemoStyled = injectSheet(styles$2)(Demo);
+const DemoStyled = injectSheet$1(styles$2)(Demo);
 ReactDOM.render(React.createElement(DemoStyled, null), document.getElementById('root'));

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import injectSheet from 'react-jss/lib/injectSheet';
+import injectSheet from 'react-jss';
 import Wheel, { OpacityRange } from '../src';
 
 const styles = {
@@ -28,7 +28,7 @@ const styles = {
   },
   wrapper: {
     display: 'inline-flex',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   opacity: {
     transform: 'rotate(270deg)',
@@ -68,7 +68,7 @@ class Demo extends React.Component {
           <OpacityRange
             value={opacity * 100}
             onChange={evt => this.setState({ opacity: evt.target.value / 100 })}
-            wrapperProps={{
+            rootProps={{
               className: _.opacity,
             }}
           />
