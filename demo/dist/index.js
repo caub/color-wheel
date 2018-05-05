@@ -350,6 +350,20 @@ var hsl2hsv = ((h, s, l) => {
   return [h, S, V];
 });
 
+var hsv2hwb = ((h, s, v) => [h, (1 - s) * v, 1 - v]);
+
+var hsl2hwb = (...a) => hsl2hsv(...hsv2hwb(...a));
+
+var hwb2hsv = ((h, w, b) => [h, b === 1 ? 0 : Math.max(0, 1 - w / (1 - b)), 1 - b]);
+
+var hsv2hsl = ((h, s, v) => {
+  const L = (2 - s) * v / 2,
+        S = s * v / (L < 0.5 ? L * 2 : 2 - L * 2);
+  return [h, S || 0, L];
+});
+
+var hwb2hsl = (...a) => hwb2hsv(...hsv2hsl(...a));
+
 var hsl2rgb = ((h, s, l) => {
   if (s === 0) return [l, l, l]; // achromatic
 
@@ -367,207 +381,6 @@ function hue2rgb(p, q, t) {
   if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
   return p;
 }
-
-var hsv2hsl = ((h, s, v) => {
-  const L = (2 - s) * v / 2,
-        S = s * v / (L < 0.5 ? L * 2 : 2 - L * 2);
-  return [h, S || 0, L];
-});
-
-var hsv2hwb = ((h, s, v) => [h, (1 - s) * v, 1 - v]);
-
-var hsv2rgb = ((h, s, v) => {
-  const i = Math.floor(h * 6);
-  const f = h * 6 - i;
-  const p = v * (1 - s);
-  const q = v * (1 - f * s);
-  const t = v * (1 - (1 - f) * s);
-
-  switch (i) {
-    case 6:
-    case 0:
-      return [v, t, p];
-
-    case 1:
-      return [q, v, p];
-
-    case 2:
-      return [p, v, t];
-
-    case 3:
-      return [p, q, v];
-
-    case 4:
-      return [t, p, v];
-
-    case 5:
-      return [v, p, q];
-  }
-});
-
-var hwb2hsv = ((h, w, b) => [h, b === 1 ? 0 : Math.max(0, 1 - w / (1 - b)), 1 - b]);
-
-var hwb2rgb = ((h, w, b) => {
-  // could throw or warn, or normalize if w+b>=1 ?
-  const v = 1 - b;
-  const i = Math.floor(h * 6);
-  const f = i & 1 ? 1 + i - h * 6 : h * 6 - i; // if i is odd
-
-  const n = w + f * (v - w); // linear interpolation
-
-  switch (i) {
-    case 6:
-    case 0:
-      return [v, n, w];
-
-    case 1:
-      return [n, v, w];
-
-    case 2:
-      return [w, v, n];
-
-    case 3:
-      return [w, n, v];
-
-    case 4:
-      return [n, w, v];
-
-    case 5:
-      return [v, w, n];
-  }
-});
-
-var rgb2hsl = ((r, g, b) => {
-  const max = Math.max(r, g, b),
-        min = Math.min(r, g, b);
-  const l = (max + min) / 2,
-        d = max - min;
-  if (d <= 0) return [0, 0, l]; // achromatic
-
-  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-  const h = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
-  return [h / 6, s, l];
-});
-
-var rgb2hsv = ((r, g, b) => {
-  const max = Math.max(r, g, b),
-        min = Math.min(r, g, b);
-  const v = max,
-        d = max - min,
-        s = max === 0 ? 0 : d / max;
-  if (d <= 0) return [0, s, v]; // achromatic
-
-  const h = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
-  return [h / 6, s, v];
-});
-
-var rgb2hwb = ((R, G, B) => {
-  const max = Math.max(R, G, B),
-        min = Math.min(R, G, B);
-  const b = 1 - max,
-        d = max - min;
-  if (d <= 0) return [0, min, b]; // achromatic
-
-  const hue = min === R ? 3 - (G - B) / d : min === G ? 5 - (B - R) / d : 1 - (R - G) / d; // const [f, i] = min === R ? [G - B, 3 / 6] : min === G ? [B - R, 5 / 6] : [R - G, 1 / 6];
-
-  return [hue / 6, min, b];
-});
-
-var lib$1 = /*#__PURE__*/Object.freeze({
-  hsl2hsv: hsl2hsv,
-  hsl2rgb: hsl2rgb,
-  hsv2hsl: hsv2hsl,
-  hsv2hwb: hsv2hwb,
-  hsv2rgb: hsv2rgb,
-  hwb2hsv: hwb2hsv,
-  hwb2rgb: hwb2rgb,
-  rgb2hsl: rgb2hsl,
-  rgb2hsv: rgb2hsv,
-  rgb2hwb: rgb2hwb
-});
-
-// Hex <-> RGB
-// ab128c -> [r, g, b]
-const hexToRgb = s => s.length === 3 ? [parseInt(s[0] + s[0], 16), parseInt(s[1] + s[1], 16), parseInt(s[2] + s[2], 16)] : s.length === 6 ? [parseInt(s.slice(0, 2), 16), parseInt(s.slice(2, 4), 16), parseInt(s.slice(4, 6), 16)] : [parseInt(s.slice(0, 2), 16), parseInt(s.slice(2, 4), 16), parseInt(s.slice(4, 6), 16), Math.round(parseInt(s.slice(6, 8), 16) / 0.255) / 1000];
-const rgbToHex = (R, G, B, A) => R % 17 === 0 && G % 17 === 0 && B % 17 === 0 && A === undefined // short version
-? R.toString(16)[0] + G.toString(16)[0] + B.toString(16)[0] : R.toString(16).padStart(2, 0) + G.toString(16).padStart(2, 0) + B.toString(16).padStart(2, 0) + (A ? Math.round(A * 255).toString(16).padStart(2, 0) : '');
-
-var libHex = /*#__PURE__*/Object.freeze({
-  hexToRgb: hexToRgb,
-  rgbToHex: rgbToHex
-});
-
-const libKeys = Object.keys(lib$1);
-/**
- * @return the shortest (inverted) path fn between 2 keys in lib object
- */
-
-const getPath = (fromKey, toKey) => {
-  let nodes = [fromKey];
-  const visited = new Map(); // map node key => parent key
-
-  while (nodes.length) {
-    // search breadth-first
-    const newNodes = [];
-
-    for (const k of nodes) {
-      if (lib$1[k + '2' + toKey]) {
-        // done, we can stop
-        const arr = [toKey, k];
-        let fn = lib$1[k + '2' + toKey];
-
-        for (let key = k; visited.has(key) && key !== fromKey; key = visited.get(key)) {
-          // compose functions while there's a parent
-          arr.push(visited.get(key));
-        }
-
-        return arr;
-      }
-
-      libKeys.filter(s => s.slice(0, 3) === k).map(s => s.slice(4)).filter(key => !visited.has(key)).forEach(key => {
-        visited.set(key, k);
-        newNodes.push(key);
-      });
-    }
-
-    nodes = newNodes;
-  }
-};
-
-const roundH = ([h, s, l]) => [Math.round(360 * h) % 360, Math.round(100 * s), Math.round(100 * l)];
-/**
- * all functions available from a Proxy (to generate missing ones dynamically)
- * foo2bar for functions with input/output in [0, 1]
- * fooToBar for functions with natural inputs [0,255] for r,g,b, [0,360[ for hue, [0, 100] for the rest
- */
-
-
-var proxy = new Proxy(new Map([...Object.entries(lib$1), ...Object.entries(libHex)]), {
-  get: (map, key) => {
-    if (typeof key !== 'string') return map;
-    if (map.has(key)) return map.get(key);
-    const fromKey = key.slice(0, 3);
-    const toKey = key.slice(-3).toLowerCase();
-    const k = fromKey + '2' + toKey;
-    let fn = lib$1[k];
-
-    if (!fn) {
-      // todo check fromKey, toKey are in available keys, else getPath might be in infinite loop
-      const path = getPath(fromKey, toKey);
-      const funcs = Array.from({
-        length: path.length - 1
-      }, (_, i) => lib$1[`${path[i + 1]}2${path[i]}`]);
-      fn = funcs.reduceRight((func, f) => (...a) => f(...func(...a)));
-      map.set(k, fn);
-    }
-
-    if (key[3] === '2') return fn;
-    const K = fromKey + 'To' + toKey[0].toUpperCase() + toKey.slice(1);
-    const FN = fromKey === 'rgb' ? (r, g, b) => roundH(fn(r / 255, g / 255, b / 255)) : toKey === 'rgb' ? (h, x, y) => fn(h / 360, x / 100, y / 100).map(v => Math.round(v * 255)) : (h, x, y) => roundH(fn(h / 360, x / 100, y / 100));
-    map.set(K, FN);
-    return FN;
-  }
-});
 
 const PI = Math.PI;
 function createAnnulus(canvas) {
@@ -668,8 +481,6 @@ function move(e, container, cb) {
   });
 }
 
-const hsl2hwb = proxy.hsl2hwb,
-      hwb2hsl = proxy.hwb2hsl;
 const PI$1 = Math.PI;
 const L = 135 * 3 ** 0.5; // todo export this (related to canvas width height below)
 
@@ -764,7 +575,6 @@ const styles = {
     zIndex: -1
   }
 };
-
 class Wheel extends React.PureComponent {
   componentDidMount() {
     createTriangle(this.canvas);
@@ -867,7 +677,8 @@ class Wheel extends React.PureComponent {
 
   render() {
     const _this$props = this.props,
-          _ = _this$props.classes,
+          _this$props$classes = _this$props.classes,
+          _ = _this$props$classes === void 0 ? {} : _this$props$classes,
           className = _this$props.className,
           props = _objectWithoutProperties(_this$props, ["classes", "className"]);
 
@@ -931,7 +742,6 @@ class Wheel extends React.PureComponent {
   }
 
 }
-
 var Wheel$1 = injectSheet(styles)(Wheel);
 
 const styles$1 = {
@@ -972,8 +782,7 @@ const styles$1 = {
     }
   }
 };
-
-const OpacityRangeRaw = (_ref) => {
+const OpacityRange = (_ref) => {
   let classes = _ref.classes,
       _ref$rootProps = _ref.rootProps;
   _ref$rootProps = _ref$rootProps === void 0 ? {} : _ref$rootProps;
@@ -992,8 +801,7 @@ const OpacityRangeRaw = (_ref) => {
     className: classnames(className, classes.input)
   }, props)));
 };
-
-var OpacityRange = injectSheet(styles$1)(OpacityRangeRaw);
+var OpacityRange$1 = injectSheet(styles$1)(OpacityRange);
 
 const styles$2 = {
   '@global': {
@@ -1071,7 +879,7 @@ class Demo extends React.Component {
       onChange: color => this.setState({
         color
       })
-    }), React.createElement(OpacityRange, {
+    }), React.createElement(OpacityRange$1, {
       value: opacity * 100,
       onChange: evt => this.setState({
         opacity: evt.target.value / 100

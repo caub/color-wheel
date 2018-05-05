@@ -1,12 +1,11 @@
 import React from 'react';
 import cn from 'classnames';
 import injectSheet from 'react-jss/lib/injectSheet';
-import proxy from 'color-tf/src/proxy';
-import { move, createAnnulus, createTriangle } from './util';
+import hsl2hwb from 'color-tf/src/hsl2hwb';
+import hwb2hsl from 'color-tf/src/hwb2hsl';
+import {move, createAnnulus, createTriangle} from './utils';
 
-const { hsl2hwb, hwb2hsl } = proxy;
-
-const { PI } = Math;
+const {PI} = Math;
 
 const L = 135 * 3 ** 0.5; // todo export this (related to canvas width height below)
 
@@ -96,7 +95,7 @@ const styles = {
   },
 };
 
-class Wheel extends React.PureComponent {
+export class Wheel extends React.PureComponent {
   componentDidMount() {
     createTriangle(this.canvas);
     createAnnulus(this.c2);
@@ -179,7 +178,7 @@ class Wheel extends React.PureComponent {
   }
 
   render() {
-    const { classes: _, className, ...props } = this.props;
+    const {classes: _ = {}, className, ...props} = this.props;
     return (
       <div ref={el => (this.wheel = el)} className={cn(_.wheel, className)} {...props}>
         <svg width="20" height="20" className={_.hidden}>

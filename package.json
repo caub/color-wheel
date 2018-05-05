@@ -3,11 +3,12 @@
   "version": "1.2.1",
   "description": "Color Wheel picker",
   "scripts": {
-    "build": "rm -rf dist && rollup -c",
+    "test": "npm run build && jest",
+    "build": "rm -rf dist && NODE_ENV=production rollup -c",
     "build:demo": "rm -rf demo/dist && NODE_ENV=production rollup -c demo/rollup.config.js",
     "pub": "npm run build && cp README.md dist/ && cp package.json dist/ && npm publish dist"
   },
-  "repository": "https://github.com/caub/color-wheel/packages/core",
+  "repository": "https://github.com/caub/color-wheel",
   "keywords": [
     "color",
     "picker",
@@ -19,6 +20,12 @@
     "url": "https://github.com/caub/color-wheel/issues"
   },
   "homepage": "https://github.com/caub/color-wheel#readme",
+  "jest": {
+    "setupTestFrameworkScriptFile": "<rootDir>/test/setup.js",
+    "moduleNameMapper": {
+      "./utils": "<rootDir>/test/utils"
+    }
+  },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.46",
     "@babel/core": "^7.0.0-beta.46",
@@ -26,6 +33,10 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.46",
     "@babel/preset-env": "^7.0.0-beta.46",
     "@babel/preset-react": "^7.0.0-beta.46",
+    "babel-core": "^7.0.0-bridge.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "jest": "^22.4.3",
     "react-dom": "^16.3.2",
     "rollup": "github:rollup/rollup",
     "rollup-plugin-babel": "^4.0.0-beta.4",
@@ -36,7 +47,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
-    "color-tf": "^5.0.2",
+    "color-tf": "^5.0.3",
     "react": "^16.3.2",
     "react-jss": "^8.4.0"
   },
