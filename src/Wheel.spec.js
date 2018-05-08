@@ -1,11 +1,11 @@
 import React from 'react';
-import {mount, shallow} from 'enzyme';
-import {Wheel} from '../dist/Wheel';
+import {mount} from 'enzyme';
+import {Wheel} from './Wheel'; // could use ../dist/Wheel, but need to adjust jest mocks map, with rollup generated chunk
 
 describe('Wheel', () => {
   it('should render without throwing an error', () => {
-    const container = shallow(<Wheel />);
-    console.log(container.debug());
-    console.log(container.find('div'));
+    const container = mount(<Wheel />);
+    // console.log(container.debug());
+    expect(container.find('canvas')).toHaveLength(2);
   });
 });

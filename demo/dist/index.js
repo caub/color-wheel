@@ -1,4 +1,4 @@
-import { a as commonjsGlobal, b as unwrapExports, c as createCommonjsModule, d as _react, e as _propTypes, f as _jss, g as _ns, h as _contextTypes, i as _propTypes2, j as injectSheet_1, k as _theming, l as React, m as injectSheet, n as ReactDOM } from './chunk-cdf6a347.js';
+import { a as commonjsGlobal, b as unwrapExports, c as createCommonjsModule, d as _react, e as _propTypes, f as _jss, g as _ns, h as _contextTypes, i as _propTypes2, j as injectSheet_1, k as _theming, l as React, m as injectSheet, n as ReactDOM } from './chunk-58c8931f.js';
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -683,7 +683,9 @@ class Wheel extends React.PureComponent {
           props = _objectWithoutProperties(_this$props, ["classes", "className"]);
 
     return React.createElement("div", _extends({
-      ref: el => this.wheel = el,
+      ref: el => {
+        this.wheel = el;
+      },
       className: classnames(_.wheel, className)
     }, props), React.createElement("svg", {
       width: "20",
@@ -701,23 +703,33 @@ class Wheel extends React.PureComponent {
       cy: "10",
       fill: "black"
     })))), React.createElement("canvas", {
-      ref: el => this.c2 = el,
+      ref: el => {
+        this.c2 = el;
+      },
       className: _.c2,
       height: "330",
       width: "330"
     }), React.createElement("div", {
-      ref: el => this.triangle = el,
+      ref: el => {
+        this.triangle = el;
+      },
       className: _.triangle
     }, React.createElement("div", {
-      ref: el => this.twrap = el,
+      ref: el => {
+        this.twrap = el;
+      },
       className: _.twrap
     }, React.createElement("canvas", {
-      ref: el => this.canvas = el,
+      ref: el => {
+        this.canvas = el;
+      },
       className: _.canvas,
       height: "270",
       width: "270"
     })), React.createElement("svg", {
-      ref: el => this.fadeSel = el,
+      ref: el => {
+        this.fadeSel = el;
+      },
       className: _.sel,
       width: "20",
       height: "20"
@@ -728,7 +740,9 @@ class Wheel extends React.PureComponent {
       cy: "10",
       mask: "url(#hole)"
     }))), React.createElement("svg", {
-      ref: el => this.hueSel = el,
+      ref: el => {
+        this.hueSel = el;
+      },
       className: classnames(_.sel, _.hueSel),
       width: "20",
       height: "20"
@@ -783,7 +797,8 @@ const styles$1 = {
   }
 };
 const OpacityRange = (_ref) => {
-  let classes = _ref.classes,
+  let _ref$classes = _ref.classes,
+      classes = _ref$classes === void 0 ? {} : _ref$classes,
       _ref$rootProps = _ref.rootProps;
   _ref$rootProps = _ref$rootProps === void 0 ? {} : _ref$rootProps;
 

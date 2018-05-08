@@ -1,6 +1,6 @@
 {
   "name": "color-wheel",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Color Wheel picker",
   "scripts": {
     "test": "npm run build && jest",
@@ -23,7 +23,8 @@
   "jest": {
     "setupTestFrameworkScriptFile": "<rootDir>/test/setup.js",
     "moduleNameMapper": {
-      "./utils": "<rootDir>/test/utils"
+      "./utils$": "<rootDir>/test/utils.js",
+      "^color-tf/src/": "<rootDir>/test/color-tf-mock.js"
     }
   },
   "devDependencies": {

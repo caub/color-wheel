@@ -4,8 +4,8 @@ import {OpacityRange} from '../dist/OpacityRange';
 
 describe('OpacityRange', () => {
   it('should render without throwing an error', () => {
-    const container = shallow(<OpacityRange classes={{}} />);
-    console.log(container.debug());
+    const container = shallow(<OpacityRange />);
+    // console.log(container.debug());
     expect(container.find('input')).toHaveLength(1);
   });
 });

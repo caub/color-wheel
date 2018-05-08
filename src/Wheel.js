@@ -180,7 +180,7 @@ export class Wheel extends React.PureComponent {
   render() {
     const {classes: _ = {}, className, ...props} = this.props;
     return (
-      <div ref={el => (this.wheel = el)} className={cn(_.wheel, className)} {...props}>
+      <div ref={el => {this.wheel = el}} className={cn(_.wheel, className)} {...props}>
         <svg width="20" height="20" className={_.hidden}>
           <defs>
             <mask id="hole">
@@ -189,17 +189,17 @@ export class Wheel extends React.PureComponent {
             </mask>
           </defs>
         </svg>
-        <canvas ref={el => (this.c2 = el)} className={_.c2} height="330" width="330" />
-        <div ref={el => (this.triangle = el)} className={_.triangle}>
-          <div ref={el => (this.twrap = el)} className={_.twrap}>
-            <canvas ref={el => (this.canvas = el)} className={_.canvas} height="270" width="270" />
+        <canvas ref={el => {this.c2 = el}} className={_.c2} height="330" width="330" />
+        <div ref={el => {this.triangle = el}} className={_.triangle}>
+          <div ref={el => {this.twrap = el}} className={_.twrap}>
+            <canvas ref={el => {this.canvas = el}} className={_.canvas} height="270" width="270" />
           </div>
-          <svg ref={el => (this.fadeSel = el)} className={_.sel} width="20" height="20">
+          <svg ref={el => {this.fadeSel = el}} className={_.sel} width="20" height="20">
             <circle fill="white" r="10" cx="10" cy="10" mask="url(#hole)" />
           </svg>
         </div>
 
-        <svg ref={el => (this.hueSel = el)} className={cn(_.sel, _.hueSel)} width="20" height="20">
+        <svg ref={el => {this.hueSel = el}} className={cn(_.sel, _.hueSel)} width="20" height="20">
           <circle fill="white" r="10" cx="10" cy="10" mask="url(#hole)" />
         </svg>
       </div>
