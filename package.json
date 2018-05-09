@@ -1,11 +1,11 @@
 {
   "name": "color-wheel",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Color Wheel picker",
   "scripts": {
     "test": "npm run build && jest",
-    "build": "rm -rf dist && NODE_ENV=production rollup -c",
-    "build:demo": "rm -rf demo/dist && NODE_ENV=production rollup -c demo/rollup.config.js",
+    "build": "rm -rf dist && NODE_ENV=rollup rollup -c",
+    "build:demo": "rm -rf demo/dist && NODE_ENV=rollup rollup -c demo/rollup.config.js",
     "pub": "npm run build && cp README.md dist/ && cp package.json dist/ && npm publish dist"
   },
   "repository": "https://github.com/caub/color-wheel",
@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
-    "color-tf": "^5.0.3",
+    "color-tf": "^5.0.4",
     "react": "^16.3.2",
     "react-jss": "^8.4.0"
   },

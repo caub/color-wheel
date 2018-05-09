@@ -4,9 +4,9 @@ import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
 
 export default {
-  input: ['demo/index.js', 'demo/vendor.js'],
+  input: 'demo/index.js',
   output: {
-    dir: 'demo/dist',
+    file: 'demo/dist/index.js',
     format: 'es',
   },
   plugins: [
@@ -29,5 +29,5 @@ export default {
   watch: {
     exclude: ['node_modules/**'],
   },
-  experimentalCodeSplitting: true,
+  // experimentalCodeSplitting: true,
 };

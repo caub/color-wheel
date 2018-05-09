@@ -1,7 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import injectSheet from 'react-jss';
-import Wheel, { OpacityRange } from '../src';
+import injectSheet from 'react-jss/lib/injectSheet';
+import Wheel, {OpacityRange} from '../src';
 
 const styles = {
   '@global': {
@@ -37,7 +35,7 @@ const styles = {
 };
 
 class Demo extends React.Component {
-  state = { opacity: 1, color: [0, 0.75, 0.8] };
+  state = {opacity: 1, color: [0, 0.75, 0.8]};
 
   componentDidMount() {
     this.update();
@@ -59,15 +57,15 @@ class Demo extends React.Component {
   }
 
   render() {
-    const { classes: _ } = this.props;
-    const { opacity, color } = this.state;
+    const {classes: _} = this.props;
+    const {opacity, color} = this.state;
     return (
       <div className={_.content}>
         <div className={_.wrapper}>
-          <Wheel color={color} onChange={color => this.setState({ color })} />
+          <Wheel color={color} onChange={color => this.setState({color})} />
           <OpacityRange
             value={opacity * 100}
-            onChange={evt => this.setState({ opacity: evt.target.value / 100 })}
+            onChange={evt => this.setState({opacity: evt.target.value / 100})}
             rootProps={{
               className: _.opacity,
             }}
