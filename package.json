@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
-    "color-tf": "^5.0.4",
+    "color-tf": "^5.1.1",
     "react": "^16.3.2",
     "react-jss": "^8.4.0"
   },
