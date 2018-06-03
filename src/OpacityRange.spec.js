@@ -1,6 +1,6 @@
 import React from 'react';
-import {shallow} from 'enzyme';
-import {OpacityRange} from '../dist/OpacityRange';
+import { shallow } from 'enzyme';
+import { OpacityRange } from '../dist/OpacityRange';
 
 describe('OpacityRange', () => {
   it('should render without throwing an error', () => {

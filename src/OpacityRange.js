@@ -1,6 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
-import injectSheet from 'react-jss/lib/injectSheet';
+import injectSheet from 'react-jss';
 
 const styles = {
   root: {
@@ -42,7 +42,7 @@ const styles = {
   }
 };
 
-export const OpacityRange = ({classes = {}, rootProps: {className: rootClassName, ...rootProps} = {}, className, ...props}) => (
+export const OpacityRange = ({ classes = {}, rootProps: { className: rootClassName, ...rootProps } = {}, className, ...props }) => (
   <div className={cn(rootClassName, classes.root)} {...rootProps}>
     <input type="range" min="0" max="100" className={cn(className, classes.input)} {...props} />
   </div>

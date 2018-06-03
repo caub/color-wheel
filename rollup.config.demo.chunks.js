@@ -1,12 +1,16 @@
 import babel from 'rollup-plugin-babel';
-import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
+import resolve from 'rollup-plugin-node-resolve';
 import replace from 'rollup-plugin-replace';
 
 export default {
   input: 'demo/index.js',
+  experimentalCodeSplitting: true,
+  // manualChunks: {
+  //   'vendor': ['react', 'react-dom', 'react-jss', 'classnames']
+  // },
   output: {
-    file: 'demo/dist/index.js',
+    dir: 'demo/dist',
     format: 'es',
   },
   plugins: [
@@ -14,20 +18,15 @@ export default {
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
     resolve({
-      jsnext: true,
-      // customResolveOptions: {
-      //   moduleDirectory: 'node_modules',
-      // },
+      jsnext: true
     }),
     commonjs({
       include: 'node_modules/**',
+      exclude: ['src/**', 'demo/**'],
     }),
-    babel({
-      exclude: 'node_modules/**',
-    }),
+    babel(),
   ],
   watch: {
     exclude: ['node_modules/**'],
   },
-  // experimentalCodeSplitting: true,
 };

@@ -1,5 +1,7 @@
-import injectSheet from 'react-jss/lib/injectSheet';
-import Wheel, { OpacityRange } from '../src';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import injectSheet from 'react-jss';
+import Wheel, { OpacityRange } from '../src/index';
 
 const styles = {
   '@global': {
