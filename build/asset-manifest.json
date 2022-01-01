@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/color-wheel/build/static/js/main.f412fcf5.js",
+    "index.html": "/color-wheel/build/index.html",
+    "main.f412fcf5.js.map": "/color-wheel/build/static/js/main.f412fcf5.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.f412fcf5.js"
+  ]
+}

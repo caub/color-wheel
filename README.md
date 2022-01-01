@@ -1,12 +1,12 @@
 ## Color Wheel
 
-[Color picker React component](https://caub.github.io/color-wheel/demo)
+[Color picker React component](https://caub.github.io/color-wheel/build)
 
 ```js
 import ColorWheel from 'color-wheel';
 
 // usage:
-<ColorWheel onChange={color => console.log(color)} />;
+<ColorWheel value={color} onChange={setColor} />; // color: [hue, saturation, lightness] (normalized to 0-1)
 ```
 
 ### Drafts
